@@ -1,0 +1,13 @@
+node_modules/
+
+# Environment variables
+.env
+.env.*         # .env.development, .env.local, etc.
+
+# Build output
+dist/
+build/
+
+
+# Debug and IDE tools
+.vscode/
