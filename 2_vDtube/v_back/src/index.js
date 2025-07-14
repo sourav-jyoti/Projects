@@ -9,7 +9,7 @@ dotenv.config({
 const PORT = process.env.PORT || 3000;
 
 
-//*connect to db if succesful continue
+//*connect to db if succesful then start listening
 (async() => {
     try {
     connectDB();
