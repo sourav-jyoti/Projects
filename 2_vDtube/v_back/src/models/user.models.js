@@ -14,6 +14,9 @@
 */
 
 import mongoose,{Schema} from "mongoose";
+import bcrypt, { hash } from "bcrypt";
+import jwt from "jsonwebtoken";
+
 
 const userSchema = new Schema(
     {
@@ -64,4 +67,43 @@ const userSchema = new Schema(
     {timestamps:true}//automatically creates updatedAt and createdAt
 )
 
+//=="pre()" is a hook that tells before saving
+userSchema.pre("save",async function (next) {
+
+    if(!this.modified("password")) return next(); //*if password is not modified than no need to bcrypt
+
+    this.password = bcrypt.hash(this.password,10)
+
+    next()
+})
+
+//==to check whether user password is same as stored
+userSchema.methods.isPasswordCorrect = async function (password) {
+    return await bcrypt.compare(password,this.password)
+}
+
+//==jwt using generateAccessToken , 
+userSchema.methods.generateAccessToken = function (){
+    //short lived access token
+    return jwt.sign({
+        _id:this._id,
+        email:this.email
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    {   expiresIn:process.env.TOKEN_EXPIRE_TIME   }
+    );
+}
+
+//==jwt generateRefreshToken
+userSchema.methods.generateRefreshToken = function (){
+    //short lived access token
+    return jwt.sign({
+        _id:this._id,
+    },
+    process.env.Refresh_TOKEN_SECRET,
+    {   expiresIn:process.env.Refresh_EXPIRE_TIME   }
+    );
+}
+
 export const User = mongoose.model("User",userSchema)
+
