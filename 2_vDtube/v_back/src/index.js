@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 3000;
 
 
 
-// --or--
+// --or-- using .then()
 /**
 connectDB()
   .then(() => {

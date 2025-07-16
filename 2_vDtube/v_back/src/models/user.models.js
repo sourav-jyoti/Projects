@@ -3,7 +3,7 @@
   id string pk
   username string
   email string
-  fullName string
+  fullname string
   avatar string
   coverImage string
   watchHistory ObjectId[] videos
@@ -70,7 +70,7 @@ const userSchema = new Schema(
 //=="pre()" is a hook that tells before saving
 userSchema.pre("save",async function (next) {
 
-    if(!this.modified("password")) return next(); //*if password is not modified than no need to bcrypt
+    if(!this.isModified("password")) return next(); //*if password is not modified than no need to bcrypt
 
     this.password = bcrypt.hash(this.password,10)
 
