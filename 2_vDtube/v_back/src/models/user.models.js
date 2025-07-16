@@ -61,7 +61,7 @@ const userSchema = new Schema(
             required:[true,"password is reqd."]
         },
         refreshToken:{
-            type:string
+            type:String
         },
     },
     {timestamps:true}//automatically creates updatedAt and createdAt

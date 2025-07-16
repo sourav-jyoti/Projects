@@ -1,3 +1,5 @@
+//**purpose of this controller = healthcheck at constant time interval*/
+
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
