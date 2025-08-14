@@ -74,7 +74,7 @@ const LinkSchema = new Schema(
 )
 
 
-//creating model
+//creating and exporting models 
 
 export const UserModel = model("User",UserSchema);
 export const ContentModel = model("Content",ContentSchema);
