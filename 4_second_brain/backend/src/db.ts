@@ -1,6 +1,15 @@
 import mongoose,{model,Schema} from "mongoose";
 
-mongoose.connect("mongodb://localhost:27017/brainly")
+(async () => {
+    try{
+        const connectionInstance = await mongoose.connect("mongodb://localhost:27017/brainly")
+       console.log(`\n Mongo connect ${connectionInstance.connection.host}`);
+        
+    }catch(e){
+        console.log("mongodb connection error",e);
+        process.exit(1);  
+    }
+})();
 
 //creating schema
 
@@ -70,10 +79,10 @@ export const LinkModel = model("Link",LinkSchema);
 
 
 
-//==nect update 
+//==next update 
 /**
- **make the db connection inside try catch
- **use TS genirics to achieve true Ts in db.ts
+ *make the db connection inside try catch - done
+ *use TS genirics to achieve true Ts in db.ts
  */
 
 

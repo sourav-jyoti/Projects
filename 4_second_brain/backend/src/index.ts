@@ -1,13 +1,44 @@
 import dotenv from "dotenv"
 import express from "express";
+import { UserModel } from "./db.js";
+
 const app = express(); //creating an instance of express
 const PORT = process.env.PORT || 3000;
 
+//must have express middlewares
+app.use(express.json())
+
+
+//routes
+app.post("/api/v1/signup",async(req,res)=>{
+
+     const { uname, pass } = req.body;
+
+    try{
+        await UserModel.create(
+            {
+                username:uname,
+                password:pass
+            }
+        )
+        res.json({
+            message:"User signed up"
+        })
+    }
+    catch(error){
+        res.status(411).json({
+            message:"error signing up"
+        })
+    }
+})
 
 
 
+
+
+
+//port 
 try {
-
     app.listen(PORT,()=>{
         console.log(`server is running ${PORT}`);
     })
@@ -21,7 +52,10 @@ try {
 
 
 
-
+/**
+* --next update
+**implement cors,jwt,zod
+*/
 
 
 
@@ -65,30 +99,6 @@ import { UserModel } from "./db";
 const app = express();
 app.use(express.json());
 
-
-
-app.post("/api/v1/sigup",async (req,res)=>{
-//zod validation
-    const username = req.body.username;
-    const password = req.body.username;
-
-    try{
-        await UserModel.create({
-            username:username,
-            password:password
-        })
-    
-        res.json({
-            message:"User signed up"
-        })
-
-    }
-    catch(e){
-        res.status(411).json({
-            message:"user exists"
-        })
-    }
-})
 
 app.post("/api/v1/sigin",(req,res)=>{
     
