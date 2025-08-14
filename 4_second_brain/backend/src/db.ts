@@ -29,6 +29,8 @@ const UserSchema = new Schema(
     }
 )
 
+const contentTypes = ['image', 'video', 'article', 'audio']; // Extend as needed //its an enum
+
 const ContentSchema = new Schema(
     {
         //every user has there own content
@@ -37,6 +39,7 @@ const ContentSchema = new Schema(
             ref:"User",
             required:true
         },
+        type: { type: String, enum: contentTypes, required: true },
         link:{
             type:String,
             required:true,
@@ -57,7 +60,8 @@ const ContentSchema = new Schema(
 const TagSchema = new Schema(
     {
         title:{
-            type:String
+            type:String,
+            unique:true
         }
     }
 )
@@ -84,5 +88,3 @@ export const LinkModel = model("Link",LinkSchema);
  *make the db connection inside try catch - done
  *use TS genirics to achieve true Ts in db.ts
  */
-
-

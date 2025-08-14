@@ -1,5 +1,6 @@
 import dotenv from "dotenv"
 import express from "express";
+import jwt from "jsonwebtoken"
 import { UserModel } from "./db.js";
 
 const app = express(); //creating an instance of express
@@ -26,14 +27,46 @@ app.post("/api/v1/signup",async(req,res)=>{
         })
     }
     catch(error){
-        res.status(411).json({
+        res.status(500).json({
             message:"error signing up"
         })
     }
 })
 
+app.post("/api/v1/signin",async(req,res)=>{
+    const {uname,pass} = req.body;
+    //find if the user exists
+    const existingUser = await UserModel.findOne({
+        username:uname,
+        password:pass
+    })
 
+    if(existingUser){
+        const token = jwt.sign({
+            id:existingUser._id
+        },process.env.JWT_PASS)
+    } 
+})
 
+app.post("/api/v1/content",async(req,res)=>{
+
+})
+
+app.get("/api/v1/content",async(req,res)=>{
+
+})
+
+app.delete("/api/v1/content",async(req,res)=>{
+
+})
+
+app.post("/api/v1/brain/share",async(req,res)=>{
+
+})
+
+app.get("/api/v1/brain/:sharelink",async(req,res)=>{
+
+})
 
 
 
