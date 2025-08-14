@@ -1,4 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
+import jwt from "jsonwebtoken";
 import { UserModel } from "./db.js";
 const app = express(); //creating an instance of express
 const PORT = process.env.PORT || 3000;
@@ -17,12 +20,32 @@ app.post("/api/v1/signup", async (req, res) => {
         });
     }
     catch (error) {
-        res.status(411).json({
+        res.status(500).json({
             message: "error signing up"
         });
     }
 });
 app.post("/api/v1/signin", async (req, res) => {
+    const { uname, pass } = req.body;
+    //find if the user exists
+    const existingUser = await UserModel.findOne({
+        username: uname,
+        password: pass
+    });
+    if (existingUser) {
+        const token = jwt.sign({
+            id: existingUser._id
+        }, process.env.JWT_PASS);
+        res.json({
+            message: "user sign in ",
+            token
+        });
+    }
+    else {
+        res.status(403).json({
+            message: "incorrect credentials"
+        });
+    }
 });
 app.post("/api/v1/content", async (req, res) => {
 });

@@ -1,4 +1,6 @@
 import dotenv from "dotenv"
+dotenv.config();
+
 import express from "express";
 import jwt from "jsonwebtoken"
 import { UserModel } from "./db.js";
@@ -45,6 +47,16 @@ app.post("/api/v1/signin",async(req,res)=>{
         const token = jwt.sign({
             id:existingUser._id
         },process.env.JWT_PASS)
+
+        res.json({
+            message:"user sign in ",
+            token
+        })
+    }
+    else{
+        res.status(403).json({
+            message:"incorrect credentials"
+        })
     } 
 })
 
