@@ -1,4 +1,5 @@
-//function of this middleware is to verify the user
+//function of this middleware is to verify the token based on the jwt secret and extracts userid
+//it doesn't double checks whether it exits or not in db 
 
 import dotenv from "dotenv"
 dotenv.config();
@@ -31,8 +32,6 @@ export const userMiddleware = (req: Request, res: Response,next: NextFunction)=>
     }
 }
 
-//different ways to remove redunderline from userId and header 
-//usecase of jwtpayload
 
 
 

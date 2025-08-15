@@ -3,7 +3,8 @@ dotenv.config();
 
 import express from "express";
 import jwt from "jsonwebtoken"
-import { UserModel } from "./db.js";
+import { ContentModel, UserModel } from "./db.js";
+import { userMiddleware } from "./middleware.js";
 
 const app = express(); //creating an instance of express
 const PORT = process.env.PORT || 3000;
@@ -15,7 +16,7 @@ app.use(express.json())
 //routes
 app.post("/api/v1/signup",async(req,res)=>{
 
-     const { uname, pass } = req.body;
+    const { uname, pass } = req.body;
 
     try{
         await UserModel.create(
@@ -35,21 +36,25 @@ app.post("/api/v1/signup",async(req,res)=>{
     }
 })
 
+
 app.post("/api/v1/signin",async(req,res)=>{
+    
     const {uname,pass} = req.body;
-    //find if the user exists
+    
+    //find if the user exists and if exists it returns object containing the stored details
     const existingUser = await UserModel.findOne({
         username:uname,
         password:pass
     })
-
+    
     if(existingUser){
         const token = jwt.sign({
             id:existingUser._id
         },process.env.JWT_PASS)
-
+        
+        
         res.json({
-            message:"user sign in ",
+            message:"user signed in ",
             token
         })
     }
@@ -60,15 +65,79 @@ app.post("/api/v1/signin",async(req,res)=>{
     } 
 })
 
+
+app.use(userMiddleware)
+//all the below routes will use this userMiddlewares
+
+
 app.post("/api/v1/content",async(req,res)=>{
 
+    const {type,link,title,tags=[]} = req.body; //tags = [] tells if users send nothing than create an empty array 
+
+    try {
+        await ContentModel.create({
+            userId:req.userId,
+            type:type,
+            link:link,
+            title:title,
+            tags:tags
+        })
+        
+        res.json({
+            message:"Content added"
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Some error occurred",
+            error
+        });
+    }
+    
 })
 
 app.get("/api/v1/content",async(req,res)=>{
-
+    
+    try {
+        const userId = req.userId;
+        const content = await ContentModel.find({
+            userId: userId
+        }).populate("userId","username")
+    
+        res.json({
+            content
+        })
+    } catch (error) {
+        res.status(500).json({
+            message:"error fetching"
+        })
+    }
 })
 
+
 app.delete("/api/v1/content",async(req,res)=>{
+    
+    const contentId = req.body.contentId;
+
+    try {
+
+        await ContentModel.deleteMany({
+            contentId,
+            userId: req.userId
+
+            //Delete all documents where contentId equals <value> AND userId equals <value>
+        })
+
+        res.json({
+            message:"deleted successfully"
+        })
+        
+    } catch (error) {
+        res.json({
+            message:"error deleting "
+        })
+    }
+
 
 })
 

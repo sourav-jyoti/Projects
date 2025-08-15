@@ -20,7 +20,7 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
 });
 const contentTypes = ['image', 'video', 'article', 'audio']; // Extend as needed //its an enum
 const ContentSchema = new Schema({
@@ -52,7 +52,7 @@ const TagSchema = new Schema({
     }
 });
 const LinkSchema = new Schema({});
-//creating model
+//creating and exporting models 
 export const UserModel = model("User", UserSchema);
 export const ContentModel = model("Content", ContentSchema);
 export const TagModel = model("Tag", TagSchema);
@@ -60,5 +60,5 @@ export const LinkModel = model("Link", LinkSchema);
 //==next update 
 /**
  *make the db connection inside try catch - done
- *use TS genirics to achieve true Ts in db.ts
+ *use TS generics to achieve true Ts in db.ts (https://mongoosejs.com/docs/typescript.html) ,(https://chatgpt.com/share/689f3595-aa50-8008-8f50-91bc1f22f086)
  */ 
