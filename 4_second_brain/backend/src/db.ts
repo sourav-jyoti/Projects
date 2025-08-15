@@ -11,6 +11,7 @@ import mongoose,{model,Schema} from "mongoose";
     }
 })();
 
+
 //creating schema
 
 const UserSchema = new Schema(
@@ -24,8 +25,8 @@ const UserSchema = new Schema(
         password:{
             type:String,
             required:true
-        }
-        
+        },
+
     }
 )
 
@@ -86,5 +87,5 @@ export const LinkModel = model("Link",LinkSchema);
 //==next update 
 /**
  *make the db connection inside try catch - done
- *use TS genirics to achieve true Ts in db.ts
+ *use TS generics to achieve true Ts in db.ts (https://mongoosejs.com/docs/typescript.html) ,(https://chatgpt.com/share/689f3595-aa50-8008-8f50-91bc1f22f086)
  */
