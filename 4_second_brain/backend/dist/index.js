@@ -50,8 +50,37 @@ app.post("/api/v1/signin", async (req, res) => {
         });
     }
 });
-app.use(userMiddleware);
+app.get("/api/v1/brain/:sharelink", async (req, res) => {
+    //find the hash in mongodb if present extract the userid and return the content
+    const hash = req.params.sharelink;
+    const link = await LinkModel.findOne({
+        hash
+    });
+    if (!link) {
+        res.status(411).json({
+            message: "Sorry incorrect input"
+        });
+        return;
+    }
+    const content = await ContentModel.find({
+        userId: link.userId
+    });
+    const user = await UserModel.findOne({
+        _id: link.userId
+    });
+    if (!user) {
+        res.status(411).json({
+            message: "user not found, error should ideally not happen"
+        });
+        return;
+    }
+    res.json({
+        username: user.username,
+        content: content
+    });
+});
 //all the below routes will use this userMiddlewares
+app.use(userMiddleware);
 app.post("/api/v1/content", async (req, res) => {
     const { type, link, title, tags = [] } = req.body; //tags = [] tells if users send empty tags than create an empty array for tags
     try {
@@ -134,8 +163,6 @@ app.post("/api/v1/brain/share", async (req, res) => {
             userId: req.userId
         });
     }
-});
-app.get("/api/v1/brain/:sharelink", async (req, res) => {
 });
 //port 
 try {
