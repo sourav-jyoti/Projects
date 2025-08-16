@@ -40,7 +40,11 @@ const ContentSchema = new Schema(
             ref:"User",
             required:true
         },
-        type: { type: String, enum: contentTypes, required: true },
+        type: { 
+            type: String, 
+            enum: contentTypes,
+            required: true
+        },
         link:{
             type:String,
             required:true,
@@ -70,7 +74,14 @@ const TagSchema = new Schema(
 
 const LinkSchema = new Schema(
     {
-        
+        userId:{
+            type:Schema.Types.ObjectId,
+            ref:"User",
+            required:true
+        },
+        hash:{
+            type:String
+        }
     }
 )
 
@@ -87,5 +98,7 @@ export const LinkModel = model("Link",LinkSchema);
 //==next update 
 /**
  *make the db connection inside try catch - done
- *use TS generics to achieve true Ts in db.ts (https://mongoosejs.com/docs/typescript.html) ,(https://chatgpt.com/share/689f3595-aa50-8008-8f50-91bc1f22f086)
+ *use TS generics to achieve true Ts (not manadatory) in db.ts (https://mongoosejs.com/docs/typescript.html) ,(https://chatgpt.com/share/689f3595-aa50-8008-8f50-91bc1f22f086)
+ *why ts doesnot show error even if we don't write the types?
+ *as we are writing the types using mongoose so writing types again means two times writing the time , but more types more robust application
  */

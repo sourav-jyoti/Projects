@@ -1,9 +1,11 @@
 import dotenv from "dotenv";
 dotenv.config();
+import { Types } from 'mongoose';
 import express from "express";
 import jwt from "jsonwebtoken";
-import { ContentModel, UserModel } from "./db.js";
+import { ContentModel, LinkModel, UserModel } from "./db.js";
 import { userMiddleware } from "./middleware.js";
+import { random } from "./utils.js";
 const app = express(); //creating an instance of express
 const PORT = process.env.PORT || 3000;
 //must have express middlewares
@@ -51,7 +53,7 @@ app.post("/api/v1/signin", async (req, res) => {
 app.use(userMiddleware);
 //all the below routes will use this userMiddlewares
 app.post("/api/v1/content", async (req, res) => {
-    const { type, link, title, tags = [] } = req.body; //tags = [] tells if users send nothing than create an empty array 
+    const { type, link, title, tags = [] } = req.body; //tags = [] tells if users send empty tags than create an empty array for tags
     try {
         await ContentModel.create({
             userId: req.userId,
@@ -88,15 +90,15 @@ app.get("/api/v1/content", async (req, res) => {
     }
 });
 app.delete("/api/v1/content", async (req, res) => {
-    const contentId = req.body.contentId;
     try {
-        await ContentModel.deleteMany({
-            contentId,
-            userId: req.userId
+        const msg = await ContentModel.deleteMany({
+            _id: new Types.ObjectId(`${req.body.contentId}`),
+            userId: new Types.ObjectId(`${req.userId}`)
             //Delete all documents where contentId equals <value> AND userId equals <value>
         });
         res.json({
-            message: "deleted successfully"
+            message: "deleted successfully",
+            msg: msg
         });
     }
     catch (error) {
@@ -106,6 +108,32 @@ app.delete("/api/v1/content", async (req, res) => {
     }
 });
 app.post("/api/v1/brain/share", async (req, res) => {
+    const share = req.body.share;
+    //if share is true 
+    if (share) {
+        //if link already exist in db then return the link
+        const existingLink = await LinkModel.findOne({
+            userId: req.userId
+        });
+        if (existingLink) {
+            res.json({
+                link: `/api/v1/brain/${existingLink.hash}`
+            });
+        }
+        const hash = random(10);
+        await LinkModel.create({
+            userId: req.userId,
+            hash: hash
+        });
+        res.json({
+            link: `/api/v1/brain/${hash}`
+        });
+    }
+    else {
+        await LinkModel.deleteOne({
+            userId: req.userId
+        });
+    }
 });
 app.get("/api/v1/brain/:sharelink", async (req, res) => {
 });
