@@ -1,7 +1,5 @@
 require('dotenv').config();//required to access the info in .env file
 
-
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
