@@ -1,0 +1,9 @@
+//tells on which files prettier must avoid 
+/.vscode
+/node_modules
+./dist
+.turbo
+
+*.env
+.env
+.env.*

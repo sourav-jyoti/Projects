@@ -1,11 +1,14 @@
-import express from "express";
+// import express from "express";
+import { a } from "@repo/zod-types/types";
 
-const app = express();
+// const app = express();
 
-app.use(express.json());
+// app.use(express.json());
 
-app.post("/api/v1/signin", async (req, res) => {});
+// app.post("/api/v1/signin", async (req, res) => {});
 
-app.get("/api/v1/sigup", async (req, res) => {});
+// app.get("/api/v1/sigup", async (req, res) => {});
 
-app.listen(3001); //don't use 3000 as it used by nextjs server
+// app.listen(3001); //don't use 3000 as it used by nextjs server
+
+console.log(a);
