@@ -13,10 +13,15 @@
       "@repo/typescript-config": "workspace:*",
       "@repo/zod-types": "workspace:*",
       "@types/express": "^5.0.3",
-      "express": "^5.1.0"
+      "dotenv": "^17.2.1",
+      "express": "^5.1.0",
+      "jsonwebtoken": "^9.0.2"
    },
    "keywords": [],
    "author": "",
    "license": "ISC",
-   "type": "commonjs"
+   "type": "commonjs",
+   "devDependencies": {
+      "@types/jsonwebtoken": "^9.0.10"
+   }
 }
