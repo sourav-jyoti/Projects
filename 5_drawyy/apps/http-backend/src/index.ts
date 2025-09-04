@@ -2,6 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
+import { userMiddleware } from "@repo/jsonwebtoken-verify/middleware";
 
 import {
    CreateProfileSchema,
@@ -36,7 +37,7 @@ app.post("/api/v1/signin", async (req, res) => {
    }
 });
 
-app.post("/api/v1/signin", async (req, res) => {
+app.post("/api/v1/signup", async (req, res) => {
    const parsedData = SigninSchema.safeParse(req.body);
    if (!parsedData.success) {
       res.json({
@@ -45,7 +46,7 @@ app.post("/api/v1/signin", async (req, res) => {
       return;
    }
 
-   //if data is parsed properly than compare in the db user is present
+   //if data is parsed properly than compare in the db whether user is present
    const user = await prismaClient.user.findFirst({
       where: {
          email: parsedData.data.username,
@@ -73,6 +74,24 @@ app.post("/api/v1/signin", async (req, res) => {
    });
 });
 
-app.get("/api/v1/sigup", async (req, res) => {});
+app.post("/api/v1/createroom", userMiddleware, async (req, res) => {
+   const parsedData = CreateRoomSchema.safeParse(req.body);
+   if (!parsedData.success) {
+      res.json({
+         message: "Incorrect inputs",
+      });
+      return;
+   }
+
+   const userId = req.userId;
+
+   //create room and store it in prisma
+   try {
+   } catch (e) {
+      res.status(411).json({
+         message: "Room already exists with this name",
+      });
+   }
+});
 
 app.listen(3001); //don't use 3000 as it used by nextjs server

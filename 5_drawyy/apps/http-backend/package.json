@@ -22,6 +22,7 @@
    "license": "ISC",
    "type": "commonjs",
    "devDependencies": {
-      "@types/jsonwebtoken": "^9.0.10"
+      "@types/jsonwebtoken": "^9.0.10",
+      "@repo/jsonwebtoken-verify": "workspace:*"
    }
 }

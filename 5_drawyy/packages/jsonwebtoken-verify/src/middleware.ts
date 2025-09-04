@@ -24,7 +24,7 @@ export const userMiddleware = (
 
    if (decoded && decoded.id) {
       req.userId = decoded.id;
-      next();
+      next(); //calling next function after checking
    } else {
       res.status(403).json({
          message: "You are not logged in",
