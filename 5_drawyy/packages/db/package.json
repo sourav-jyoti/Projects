@@ -1,13 +1,21 @@
 {
-  "name": "db",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+   "name": "@repo/db",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "type": "commonjs",
+   "exports": {
+      "./client": "./src/index.ts"
+   },
+   "dependencies": {
+      "@prisma/client": "^6.16.1",
+      "prisma": "^6.16.1"
+   },
+   "devDependencies": {
+      "@repo/typescript-config": "workspace:*",
+      "dotenv-cli": "^10.0.0"
+   }
 }
