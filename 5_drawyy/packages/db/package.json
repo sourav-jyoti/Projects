@@ -6,7 +6,7 @@
    "keywords": [],
    "author": "",
    "license": "ISC",
-   "type": "commonjs",
+   "type": "module",
    "exports": {
       "./client": "./src/index.ts"
    },

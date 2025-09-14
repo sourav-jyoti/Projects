@@ -4,8 +4,9 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import type { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import type { JwtPayload } from "jsonwebtoken"; //This way JwtPayload is treated as a type only, no runtime error.
 
 export const userMiddleware = (
    req: Request,
@@ -22,8 +23,8 @@ export const userMiddleware = (
 
    const decoded = jwt.verify(header, process.env.JWT_PASS) as JwtPayload;
 
-   if (decoded && decoded.id) {
-      req.userId = decoded.id;
+   if (decoded && decoded.userId) {
+      req.userId = decoded.userId;
       next(); //calling next function after checking
    } else {
       return res.status(403).json({

@@ -6,31 +6,32 @@ datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_STRING")
 }
+
 model User {
-  id            String     @id @default(uuid()) //
-  email         String     @unique
-  uname         String
-  password      String
-  photo         String?
-  address       String?
-  rooms         Room[] //a user can create multiple rooms
-  chats         Chat[] //a user can have multiple chats in multiple rooms
+  id       String  @id @default(uuid()) //
+  email    String  @unique
+  uname    String
+  password String
+  photo    String?
+  address  String?
+  rooms    Room[] //a user can create multiple rooms
+  chats    Chat[] //a user can have multiple chats in multiple rooms
 }
 
 model Room {
-  id          Int       @id @default(autoincrement())
-  slug        String    @unique //here slug refers to the room name //and name msut be unique
-  createdAt   DateTime  @default(now()) //automatically inserts the current date
-  adminId     String
-  admin       User      @relation(fields: [adminId], references: [id]) //foreign key to User table : adminID is linked to id of User table  
-  chats       Chat[]
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique //here slug refers to the room name //and name msut be unique
+  createdAt DateTime @default(now()) //automatically inserts the current date
+  adminId   String
+  admin     User     @relation(fields: [adminId], references: [id], onDelete: Cascade) //foreign key to User table : adminID is linked to id of User table 
+  Chat      Chat[]
 }
 
 model Chat {
-  id        Int       @id  @default(autoincrement())
-  roomId    Int
-  message   String
-  userId    String
-  room      Room      @relation(fields: [roomId], references: [id])
-  user      User      @relation(fields: [userId], references: [id])
+  id      Int    @id @default(autoincrement())
+  roomId  Int
+  message String
+  userId  String
+  room    Room   @relation(fields: [roomId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
 }
