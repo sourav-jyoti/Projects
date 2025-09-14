@@ -1,4 +1,4 @@
-//function of this middleware is to verify the token based on the jwt secret and extracts userid
+//function of this middleware is to verify the token based on the jwt secret and extracts userid passess it
 //it doesn't double checks whether it exits or not in db
 
 import dotenv from "dotenv";
@@ -26,7 +26,7 @@ export const userMiddleware = (
       req.userId = decoded.id;
       next(); //calling next function after checking
    } else {
-      res.status(403).json({
+      return res.status(403).json({
          message: "You are not logged in",
       });
    }

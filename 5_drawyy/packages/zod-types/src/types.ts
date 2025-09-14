@@ -1,16 +1,16 @@
 import { z } from "zod";
 
-export const CreateProfileSchema = z.object({
-   username: z.string().min(3).max(20),
+export const SignupSchema = z.object({
+   uname: z.string().min(3).max(20),
    password: z.string(),
-   name: z.string(),
+   email: z.string(),
 });
 
 export const SigninSchema = z.object({
-   username: z.string().min(3).max(20),
+   uname: z.string().min(3).max(20),
    password: z.string(),
 });
 
 export const CreateRoomSchema = z.object({
-   name: z.string().min(3).max(20),
+   slug: z.string().min(3).max(20),
 });
