@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid()) //
+  id       String  @id @default(uuid()) //automatically uuid will be given
   email    String  @unique
   uname    String
   password String
@@ -20,7 +20,7 @@ model User {
 
 model Room {
   id        Int      @id @default(autoincrement())
-  slug      String   @unique //here slug refers to the room name //and name msut be unique
+  slug      String   @unique //here slug refers to the room name //and name must be unique
   createdAt DateTime @default(now()) //automatically inserts the current date
   adminId   String
   admin     User     @relation(fields: [adminId], references: [id], onDelete: Cascade) //foreign key to User table : adminID is linked to id of User table 

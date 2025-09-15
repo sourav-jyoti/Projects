@@ -119,4 +119,26 @@ app.post("/api/v1/createroom", async (req, res) => {
    }
 });
 
+//this route will be used to join the join -- called automatically by client after client receives roomId -- and roomId can be varibale
+app.post("/api/v1/:roomId", async (req, res) => {
+   const roomId = Number(req.params.roomId);
+
+   try {
+      //fetch 1000 msg from the db and forward to client
+      const msg = await prismaClient.chat.findMany({
+         where: { roomId: roomId },
+         orderBy: { id: "desc" },
+         take: 1000,
+      });
+
+      res.json({ msg });
+   } catch (e) {
+      res.json({
+         msg: "some error happened",
+      });
+   }
+});
+
+//
+
 app.listen(3001); //don't use 3000 as it used by nextjs server
