@@ -139,9 +139,9 @@ app.post("/api/v1/:roomId", async (req, res) => {
    }
 });
 
-//this endpoint will be used if a any client wants to join any room based on the slug(room name) it will return the roomId
+//this endpoint will be used if a any client wants to join any room based on the slug(room name) it will return the roomId -- and slug can be variable
 app.post("/api/v1/:slug", async (req, res) => {
-   const slug = req.body;
+   const slug = req.params.slug;
 
    try {
       const roomId = prismaClient.room.findUnique({
