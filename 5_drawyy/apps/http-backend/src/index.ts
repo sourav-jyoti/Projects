@@ -139,6 +139,23 @@ app.post("/api/v1/:roomId", async (req, res) => {
    }
 });
 
-//
+//this endpoint will be used if a any client wants to join any room based on the slug(room name) it will return the roomId
+app.post("/api/v1/:slug", async (req, res) => {
+   const slug = req.body;
+
+   try {
+      const roomId = prismaClient.room.findUnique({
+         where: {
+            slug,
+         },
+      });
+
+      res.json({
+         roomId,
+      });
+   } catch (e) {
+      res.json({ msg: "some error happened" });
+   }
+});
 
 app.listen(3001); //don't use 3000 as it used by nextjs server
