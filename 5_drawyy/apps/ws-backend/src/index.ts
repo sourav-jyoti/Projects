@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 
-//we can't use the jsonwebtoken-verify/middleware here , the way we use middleware like calling next() in express specific -- is not a syntax applicable in websockets
 import { WebSocket, WebSocketServer } from "ws";
 import jwt from "jsonwebtoken";
 import type { JwtPayload } from "jsonwebtoken"; //This way JwtPayload is treated as a type only, no runtime error.
@@ -25,6 +24,8 @@ interface IncomingMessage {
 const users: User[] = [];
 
 // /------------------- JWT Handler -------------------
+//we can't use the jsonwebtoken-verify/middleware here , the way we use middleware like calling next() in express specific -- is not a syntax applicable in websockets
+
 function jwtmiddleware(token: string): string | null {
    if (!token || Array.isArray(token)) {
       return null;
@@ -75,17 +76,24 @@ async function handleMessage(ws: WebSocket, userId: string, rawData: any) {
 
    switch (data.type) {
       case "join_room":
-         if (!data.roomId) return;
+         if (!data.roomId) {
+            console.log("provide roomId");
+            return;
+         }
          user.rooms.add(data.roomId);
          console.log(`User ${userId} joined room ${data.roomId}`);
          break;
+
       case "leave_room":
          if (!data.roomId) return;
          user.rooms.delete(data.roomId);
          console.log(`User ${userId} left room ${data.roomId}`);
          break;
+
       case "chat":
-         if (!data.roomId || !data.message) return;
+         if (!data.roomId || !data.message) {
+            return;
+         }
          try {
             await prismaClient.chat.create({
                data: {
