@@ -119,8 +119,8 @@ app.post("/api/v1/createroom", async (req, res) => {
    }
 });
 
-//this route will be used to join the join -- called automatically by client after client receives roomId -- and roomId can be varibale
-app.post("/api/v1/:roomId", async (req, res) => {
+//this route will be used to join the join -- called automatically by client after client receives roomId -- and roomId can be varibale and on joining send all chats
+app.get("/api/v1/:roomId", async (req, res) => {
    const roomId = Number(req.params.roomId);
 
    try {
@@ -140,7 +140,7 @@ app.post("/api/v1/:roomId", async (req, res) => {
 });
 
 //this endpoint will be used if a any client wants to join any room based on the slug(room name) it will return the roomId -- and slug can be variable
-app.post("/api/v1/:slug", async (req, res) => {
+app.get("/api/v1/:slug", async (req, res) => {
    const slug = req.params.slug;
 
    try {

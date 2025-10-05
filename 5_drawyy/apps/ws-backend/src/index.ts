@@ -104,6 +104,7 @@ async function handleMessage(ws: WebSocket, userId: string, rawData: any) {
             });
 
             //broadcasting the message to every user in the same room except itself
+            //data.roomId! = "!" data.roomId can be undefined so , "!" tells it is defined
             users.forEach((u) => {
                if (
                   u.ws !== ws &&
