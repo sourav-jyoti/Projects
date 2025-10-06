@@ -46,6 +46,7 @@ export function game(canvas: HTMLCanvasElement) {
       const height = e.clientY - starty; //gives height
 
       //as soon as mouse is released push the drawing to the array
+      ctx.strokeRect(startx, starty, width, height);
       existingShape.push({
          type: "rect",
          x: startx,
