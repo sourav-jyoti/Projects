@@ -1,5 +1,5 @@
 import React from "react";
-import RoomCanvas from "@/components/RoomCanvas";
+import RoomCanvas from "@/pages/RoomCanvas";
 
 export default function Page({ params }: { params: { roomId: string } }) {
    const roomId = params.roomId;

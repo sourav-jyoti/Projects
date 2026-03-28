@@ -1,16 +1,17 @@
 type shape =
    | {
-        type: "rect";
+        type: "roundrect";
         x: number;
         y: number;
         width: number;
         height: number;
+        radii?: number;
      }
    | {
-        type: "circle";
-        centerx: number;
-        centery: number;
-        radius: number;
+        type: "elip";
+     }
+   | {
+        type: "line";
      };
 
 export function game(canvas: HTMLCanvasElement) {
@@ -36,7 +37,12 @@ export function game(canvas: HTMLCanvasElement) {
       if (clicked) {
          const width = e.clientX - startx; //gives the width
          const height = e.clientY - starty; //gives height
-         allShapes(existingShape, canvas, ctx);
+
+         drawExistingShapes(existingShape, canvas, ctx);
+
+         ctx.beginPath();
+         ctx.roundRect(startx, starty, width, height, [10]);
+         ctx.stroke();
       }
    });
 
@@ -47,26 +53,34 @@ export function game(canvas: HTMLCanvasElement) {
 
       //as soon as mouse is released push the drawing to the array
       existingShape.push({
-         type: "rect",
+         type: "roundrect",
          x: startx,
          y: starty,
          height,
          width,
       });
+      drawExistingShapes(existingShape, canvas, ctx);
    });
 }
-
+let a = 0;
 //function to print all the existingshapes[] stored
-function allShapes(
+function drawExistingShapes(
    existingshapes: shape[],
    canvas: HTMLCanvasElement,
    ctx: CanvasRenderingContext2D
 ) {
    ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the previous
+   console.log(existingshapes);
+
+   console.log(a++);
 
    existingshapes.map((shape) => {
-      if (shape.type === "rect") {
-         ctx.strokeRect(shape.x, shape.y, shape.width, shape.height);
+      if (shape.type === "roundrect") {
+         ctx.beginPath();
+         ctx.roundRect(shape.x, shape.y, shape.width, shape.height, [10]);
+         ctx.stroke();
       }
    });
 }
+
+//roundRect(x, y, width, height, radii)

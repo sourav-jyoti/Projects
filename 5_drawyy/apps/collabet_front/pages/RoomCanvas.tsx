@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useState } from "react";
-import Canvas from "./Canvas";
+import Canvas from "../draw/Canvas";
 //1
 export default function RoomCanvas({ roomId }: { roomId: string }) {
    // const [socket, setsocket] = useState<WebSocket | null>(null);

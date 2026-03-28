@@ -20,7 +20,7 @@ export default function Canvas({
 
    return (
       <div>
-         <canvas ref={canvasRef} width={900} height={600}></canvas>
+         <canvas ref={canvasRef} width={1920} height={427}></canvas>
       </div>
    );
 }
